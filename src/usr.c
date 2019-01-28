@@ -15,8 +15,7 @@ V user_input(S str, I len)			//<	get user's input into USER_INPUT
 {
 	I i;
 	C c = '1';
-
-	// O("user_input [usr.c]\n");
+	
 	clear_line(crd->usr_y);
 	gotoxy(crd->usr_y, crd->usr_x);
 	O("::_ ");
@@ -56,7 +55,7 @@ I input_state(S str)				//< returns state, calculates out of USER_INPUT
 		(str[0] == 'm' || str[0] == 'M') ? map 	:
 		(str[0] == 'h' || str[0] == 'H') ? hide : -1;
 }
-
+/*
 V clear_user_input()				//< clear line with y == usr_y
 {
 	// O("clear_user_input [usr.c]\n");
@@ -86,7 +85,7 @@ V show_help()						//< five lines at y == map_y; x == map_x
 	O("\t  used 'b', just do ::_ bx than ::_ ba");
 	fflush(stdout);
 }
-
+*/
 C mod_line(S str, S key, I len, S alph)		//< modify str; for ex. key == 'ab'; all a's from text swap with b
 {
 	I i, j = 0;

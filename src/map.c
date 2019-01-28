@@ -6,6 +6,8 @@
 
 #include "cfg.h"
 #include "min.h"
+#include "pnt.h"
+
 
 extern coor crd;
 extern C MAP;
@@ -14,7 +16,7 @@ extern C MAP;
 	
 V hide_map();						//< clear five lines at y == map_y; x == map_x
 V print_valids(S alph);
-
+/*
 V show_map(S alph)					//<	five lines at y == map_y; x == map_x
 {
 	I i;
@@ -78,7 +80,7 @@ V show_map(S alph)					//<	five lines at y == map_y; x == map_x
 
 	MAP = 1;
 }
-
+*/
 I letter_num(C c)
 {
 	R (c >= 'A' && c <= 'Z') ? (c - 'A') : (c - 'a');
@@ -138,7 +140,7 @@ C mod_map(S str, S alph)			//< modify map; for ex. str == "ab"; all a's to b
 
 	R1;
 }
-
+/*
 V hide_map()						//< clear five lines at y == map_y; x == map_x
 {
 	for (I i = 0; i < crd->usr_y - crd->map_y; i++) 
@@ -163,7 +165,7 @@ V print_valids(S alph)
 			O("%c   ", (i + 'a'));
 	}
 }
-
+*/
 
 
 

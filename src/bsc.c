@@ -10,6 +10,7 @@
 #include "min.h"
 #include "map.h"
 #include "usr.h"
+#include "pnt.h"
 
 extern coor crd;
 
