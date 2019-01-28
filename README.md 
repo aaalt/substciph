@@ -1,1 +1,9 @@
 # substciph
+	
+auxiliary tool for decrypting the substitution cipher
+
+## start
+
+```
+make all
+```
