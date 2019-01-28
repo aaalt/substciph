@@ -133,14 +133,23 @@ V show_map(S alph)					//<	five lines at y == map_y; x == map_x
 V count_importants(S line, I len, S* ptr_s)
 {
 	I i, j = 0, k = 0, count = 0;
+	C c;
 
 	//< calculate all smalls 
 	for (i = 0; i < len; ) {
 		count = 0;
 		j = i;
 		while (line[i] != ' ' && line[i] != ',' && line[i] != '.' && line[i] != 0) {
-			i++;
-			count++;
+			c = line[i+1];
+			if (c != ' ' && c != ',' && c != '.' && c == line[i]) {
+				ptr_s[k++] = &line[j];
+				for (; line[i] != ' ' && line[i] != ',' && line[i] !='.'; i++);
+					count += 4;
+			}
+			else {
+				i++;
+				count++;
+			}
 		}
 		while (line[i] == ' ' || line[i] == ',' || line[i] == '.')
 			i++;
@@ -151,10 +160,10 @@ V count_importants(S line, I len, S* ptr_s)
 	IM = k;
 }
 
-V show_importants(S* ptr)
+V show_importants(S* ptr, S alph)
 {
 	I i, j, k = 0;
-	
+
 	hide_map();
 	gotoxy(crd->map_y, crd->map_x);
 	for (i = 0; i < IM; i++) {
@@ -168,6 +177,8 @@ V show_importants(S* ptr)
 			gotoxy(crd->map_y + k, crd->map_x);
 		}
 	}
+
+	print_valids(alph);
 }
 
 

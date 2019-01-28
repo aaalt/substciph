@@ -96,9 +96,9 @@ V process()
 		SW(ST) { 
 			CS(help,{	MAP = 0; show_help();});	
 			CS(cc, 	{	upd_cph(LINE, USER_INPUT, LEN, alphabet);});
-			CS(map, {	MAP = 1; show_map(alphabet);});
+			CS(map, {	MAP = 1; IM_S = 0; show_map(alphabet);});
 			CS(hide,{	IM_S = 0; MAP = 0; hide_map();});
-			CS(imp,	{	IM_S = 1; show_importants(importants);});
+			CS(imp,	{	IM_S = 1; MAP = 0; show_importants(importants, alphabet);});
 
 			CD: 	error_message("invalid command", 0, "");
 		}

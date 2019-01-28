@@ -6,6 +6,6 @@ V print_valids(S alph);
 
 V count_importants(S line, I len, S* ptr_s);
 
-V show_importants(S* ptr);
+V show_importants(S* ptr, S alph);
 
 
