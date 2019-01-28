@@ -21,7 +21,7 @@ I ST = 2;
 
 C alphabet[26];			
 
-pCoors coors = {4, 3, 10, 6, 0, 14, 0, 15};
+pCoors coors = {4, 3, 7, 6, 0, 15, 0, 15};
 coor crd = &coors;
 
 
@@ -113,10 +113,7 @@ I main()
 	make_map(LINE, alphabet);
 	show_help();
 	process();
-
 	clrscr();
-
-
 	return 0;
 }
 

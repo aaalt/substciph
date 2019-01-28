@@ -22,49 +22,57 @@ V show_map(S alph)					//<	five lines at y == map_y; x == map_x
 	hide_map();
 
 	gotoxy(crd->map_y, crd->map_x);
+	O("cipher|    ");
 	for (i = 0; i < 6; i++)
-		O("%c ", 'a' + i);
-	O("      ");
+		O("%c  ", 'a' + i);
+	O("    ");
 	for (i = 0; i < 7; i++)
-		O("%c ", 'a' + i + 6);
+		O("%c  ", 'a' + i + 6);
+	O("    |cipher");
+
 
 	gotoxy(crd->map_y + 1, crd->map_x);
+	O("origin|    ");
 	for (i = 0; i < 6; i++) {
 		if (alph[i])
-			O("%c ", alph[i]);
+			O("%c  ", alph[i]);
 		else 
-			O("* ");
+			O("*  ");
 	}
-	O("      ");
+	O("    ");
 	for (i = 0; i < 7; i++) {
 		if (alph[i + 6])
-			O("%c ", alph[i + 6]);
+			O("%c  ", alph[i + 6]);
 		else 
-			O("* ");
+			O("*  ");
 	}
+	O("    |origin");
 
 	gotoxy(crd->map_y + 3, crd->map_x);
+	O("cipher|    ");
 	for (i = 0; i < 6; i++)
-		O("%c ", 'n' + i);
-	O("      ");
+		O("%c  ", 'n' + i);
+	O("    ");
 	for (i = 0; i < 7; i++)
-		O("%c ", 'n' + i + 6);
-
+		O("%c  ", 'n' + i + 6);
+	O("    |cipher");
 
 	gotoxy(crd->map_y + 4, crd->map_x);
+	O("origin|    ");
 	for (i = 0; i < 6; i++) {
 		if (alph[i + 13])
-			O("%c ", alph[i + 13]);
+			O("%c  ", alph[i + 13]);
 		else 
-			O("* ");
+			O("*  ");
 	}
-	O("      ");
+	O("    ");
 	for (i = 0; i < 7; i++) {
 		if (alph[i + 19])
-			O("%c ", alph[i + 19]);
+			O("%c  ", alph[i + 19]);
 		else 
-			O("* ");
+			O("*  ");
 	}
+	O("    |origin");
 
 	print_valids(alph);
 
@@ -142,7 +150,7 @@ V print_valids(S alph)
 	I j;
 	C i, c = 0;
 	gotoxy(crd->map_y + 6, crd->map_x);
-	O("valids:  ");
+	O("valids:    ");
 	for (i = 0; i < 26; i++) {
 		c = 0;
 		for (j = 0; j < 26; j++) {
