@@ -21,7 +21,7 @@ I ST = 2;
 
 C alphabet[26];			
 
-pCoors coors = {4, 3, 10, 6, 0, 13, 0, 15};
+pCoors coors = {4, 3, 10, 6, 0, 14, 0, 15};
 coor crd = &coors;
 
 

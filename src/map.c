@@ -13,7 +13,7 @@ extern C MAP;
 //<	S LINE = "Vs lbh nfxrq Oehpr Fpuarvre gb qrpelcg guvf, ur'q pehfu lbhe fxhyy jvgu uvf ynhtu."
 	
 V hide_map();						//< clear five lines at y == map_y; x == map_x
-
+V print_valids(S alph);
 
 V show_map(S alph)					//<	five lines at y == map_y; x == map_x
 {
@@ -65,6 +65,8 @@ V show_map(S alph)					//<	five lines at y == map_y; x == map_x
 		else 
 			O("* ");
 	}
+
+	print_valids(alph);
 
 	MAP = 1;
 }
@@ -134,4 +136,26 @@ V hide_map()						//< clear five lines at y == map_y; x == map_x
 	for (I i = 0; i < crd->usr_y - crd->map_y; i++) 
 		clear_line(crd->map_y + i);
 }
+
+V print_valids(S alph)
+{
+	I j;
+	C i, c = 0;
+	gotoxy(crd->map_y + 6, crd->map_x);
+	O("valids:  ");
+	for (i = 0; i < 26; i++) {
+		c = 0;
+		for (j = 0; j < 26; j++) {
+			if (alph[j] == (i + 'a')) {
+				c = 1;
+				j = 26;
+			}
+		}
+		if (!c)
+			O("%c   ", (i + 'a'));
+	}
+}
+
+
+
 
