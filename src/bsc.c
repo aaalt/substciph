@@ -19,10 +19,12 @@ C LINE[] = "Vs lbh nfxrq Oehpr Fpuarvre gb qrpelcg guvf, ur'q pehfu lbhe fxhyy j
 C MAP = 0;
 C USER_INPUT[US_IN_LEN];
 I ST = 2;
+I IM;
 
 C alphabet[26];			
+S importants[15];
 
-pCoors coors = {4, 3, 7, 6, 0, 15, 0, 15};
+pCoors coors = {4, 3, 7, 6, 0, 16, 0, 17};
 coor crd = &coors;
 
 
@@ -85,25 +87,23 @@ coor crd = &coors;
 
 V process()
 {
-	// O("process [bsc.c]\n");
 	while (ST != quit) {
 		user_input(USER_INPUT, US_IN_LEN); 				//< get user's input; 
 		clear_error();
 		ST = input_state(USER_INPUT);			//< calculates state type from USER_INPUT
-		// clear_user_input();
+
 		SW(ST) { 
 			CS(help,{	MAP = 0; show_help();});	
 			CS(cc, 	{	upd_cph(LINE, USER_INPUT, LEN, alphabet);});
 			CS(map, {	MAP = 1; show_map(alphabet);});
-			CS(hide, {	MAP = 0; hide_map();});
+			CS(hide,{	MAP = 0; hide_map();});
+			CS(imp,	{	show_importants(importants);});
+
 			CD: 	error_message("invalid command", 0, "");
 		}
 	}
 
-	// clear_user_input();
 }
-
-
 
 
 I main()
@@ -112,6 +112,7 @@ I main()
 	clrscr();
 	mod_line(LINE, "vv", LEN, alphabet);
 	make_map(LINE, alphabet);
+	count_importants(LINE, LEN, importants);
 	show_help();
 	process();
 	clrscr();

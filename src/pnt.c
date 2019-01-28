@@ -8,10 +8,9 @@
 
 #include "min.h"
 #include "map.h"
-#include "pnt.h"
 
-extern coor crd;
-
+ext coor crd;
+ext I IM;
 V clear_user_input()				//< clear line with y == usr_y
 {
 	// O("clear_user_input [usr.c]\n");
@@ -41,11 +40,32 @@ V show_help()						//< five lines at y == map_y; x == map_x
 	O("\t'm'    --->  show map");
 	gotoxy(crd->map_y + 4, crd->map_x);
 	O("\t'h'    --->  hide map");
-	gotoxy(crd->map_y + 6, crd->map_x);
-	O("\t* if you want to replace for ex. 'a' with");
+	gotoxy(crd->map_y + 5, crd->map_x);
+	O("\t'i'    --->  show importants");
 	gotoxy(crd->map_y + 7, crd->map_x);
+	O("\t* if you want to replace for ex. 'a' with");
+	gotoxy(crd->map_y + 8, crd->map_x);
 	O("\t  used 'b', just do ::_ bx than ::_ ba");
 	fflush(stdout);
+}
+
+V print_valids(S alph)
+{
+	I j;
+	C i, c = 0;
+	gotoxy(crd->map_y + 6, crd->map_x);
+	O("valids:    ");
+	for (i = 0; i < 26; i++) {
+		c = 0;
+		for (j = 0; j < 26; j++) {
+			if (alph[j] == (i + 'a')) {
+				c = 1;
+				j = 26;
+			}
+		}
+		if (!c)
+			O("%c   ", (i + 'a'));
+	}
 }
 
 V show_map(S alph)					//<	five lines at y == map_y; x == map_x
@@ -109,23 +129,44 @@ V show_map(S alph)					//<	five lines at y == map_y; x == map_x
 	MAP = 1;
 }
 
-
-V print_valids(S alph)
+//< keep all substrings len <= 4 in S* ptr
+V count_importants(S line, I len, S* ptr_s)
 {
-	I j;
-	C i, c = 0;
-	gotoxy(crd->map_y + 6, crd->map_x);
-	O("valids:    ");
-	for (i = 0; i < 26; i++) {
-		c = 0;
-		for (j = 0; j < 26; j++) {
-			if (alph[j] == (i + 'a')) {
-				c = 1;
-				j = 26;
-			}
+	I i, j = 0, k = 0, count = 0;
+
+	//< calculate all smalls 
+	for (i = 0; i < len; ) {
+		count = 0;
+		j = i;
+		while (line[i] != ' ' && line[i] != ',' && line[i] != '.' && line[i] != 0) {
+			i++;
+			count++;
 		}
-		if (!c)
-			O("%c   ", (i + 'a'));
+		while (line[i] == ' ' || line[i] == ',' || line[i] == '.')
+			i++;
+		if (count <= 4)
+			ptr_s[k++] = &line[j];
+	}
+
+	IM = k;
+}
+
+V show_importants(S* ptr)
+{
+	I i, j, k = 0;
+	
+	hide_map();
+	gotoxy(crd->map_y, crd->map_x);
+	for (i = 0; i < IM; i++) {
+
+		for (j = 0; ptr[i][j] != ' ' && ptr[i][j] != ',' && ptr[i][j] != '.'; j++)
+			O("%c", ptr[i][j]);
+		O("\t");
+		fflush(stdout);
+		if (!((i + 1)%3)) {
+			k++;
+			gotoxy(crd->map_y + k, crd->map_x);
+		}
 	}
 }
 
