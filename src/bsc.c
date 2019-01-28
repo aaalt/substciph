@@ -20,6 +20,7 @@ C MAP = 0;
 C USER_INPUT[US_IN_LEN];
 I ST = 2;
 I IM;
+C IM_S = 0;
 
 C alphabet[26];			
 S importants[15];
@@ -96,8 +97,8 @@ V process()
 			CS(help,{	MAP = 0; show_help();});	
 			CS(cc, 	{	upd_cph(LINE, USER_INPUT, LEN, alphabet);});
 			CS(map, {	MAP = 1; show_map(alphabet);});
-			CS(hide,{	MAP = 0; hide_map();});
-			CS(imp,	{	show_importants(importants);});
+			CS(hide,{	IM_S = 0; MAP = 0; hide_map();});
+			CS(imp,	{	IM_S = 1; show_importants(importants);});
 
 			CD: 	error_message("invalid command", 0, "");
 		}

@@ -54,3 +54,12 @@ ext C USER_INPUT[];
 ext I ST;
 ext enum STATE STATES;
 ext coor crd;
+
+ext I IM;
+ext C IM_S;
+
+ext C alphabet[];			
+ext S importants[];
+
+
+

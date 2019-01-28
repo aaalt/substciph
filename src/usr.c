@@ -83,6 +83,8 @@ C mod_line(S str, S key, I len, S alph)		//< modify str; for ex. key == 'ab'; al
 
 	if (MAP)
 		show_map(alph);
+	if (IM_S)
+		show_importants(importants);
 	R j;
 }
 
