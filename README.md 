@@ -1,9 +1,9 @@
-# SUBSTCIPH
+ # SUBSTCIPH
 	
-Auxiliary tool for decrypting the substitution cipher
+ Auxiliary tool for decrypting the substitution cipher
 
-## start
+ ## start
 
-```
-make all
-```
+ ```
+ make all
+ ```
