@@ -2,7 +2,34 @@
 #include <stdlib.h>
 #include <string.h>
 #include <unistd.h>
+#include <ctype.h>
+
 #include "___.h"
+#include "cfg.h"
+
+#include "min.h"
+#include "map.h"
+#include "usr.h"
+
+extern coor crd;
+
+C LINE[] = "Vs lbh nfxrq Oehpr Fpuarvre gb qrpelcg guvf, ur'q pehfu lbhe fxhyy jvgu uvf ynhtu.";
+
+C MAP = 0;
+C USER_INPUT[US_IN_LEN];
+I ST = 2;
+
+C alphabet[26];			
+
+pCoors coors = {4, 3, 10, 6, 0, 13, 0, 15};
+coor crd = &coors;
+
+
+//< alphabet[num] -- key for num letetr 
+
+// enum STATES {quit, help, cc, map, hide};
+
+
 /****************************************
  *	texttexttexttexttexttext			*
  *										*
@@ -13,8 +40,9 @@
  *	k k k k k k k k k k k k k 			*
  *										*
  *	::_									*
- *										*
+ *	[error_line]						*
  ****************************************/
+/*
 ///////////////////////////////////////////////////
 	typedef struct Coors {
 			UH line_x;			//< 4
@@ -46,53 +74,51 @@
 
 	enum STATES {quit, help, cc, map, hide};
 ///////////////////////////////////////////////////
-
+*/
 //<	states
-//<	0: (!) 		help
-//<	1: (q) 		quit
-//<	2: cc		decrypt
+//<	0: 	! 		help
+//<	1: 	q 		quit
+//<	2: 	cc		decrypt
 //<	3:	m 		map
-//<	4:	h 	hide map
-
-
-// V user_input();			//<	get user's input into USER_INPUT
-// I input_state();		//< returns state, calculates out of USER_INPUT
-// V clear_user_input();	//< clear line with y == usr_y
-
-V show_help();			//< five lines at y == map_y; x == map_x
-V mod_line(S str);		//< modify line; for ex. str == 'ab'; all a's from text swap with b
+//<	4:	h 		hide map
 
 V process()
 {
-	while (st != quit) {
+	// O("process [bsc.c]\n");
+	while (ST != quit) {
 		user_input(USER_INPUT, US_IN_LEN); 				//< get user's input; 
-		st = input_state(USER_INPUT);			//< calculates state type from USER_INPUT
-		clear_user_input();
-		SW(st) { 
+		clear_error();
+		ST = input_state(USER_INPUT);			//< calculates state type from USER_INPUT
+		// clear_user_input();
+		SW(ST) { 
 			CS(help,{	MAP = 0; show_help();});	
-			CS(cc, 	{	mod_map(USER_INPUT, alphabet); 
-						mod_line(LINE, USER_INPUT)});
-			CS(map, {	MAP = 1; show_map();});
+			CS(cc, 	{	upd_cph(LINE, USER_INPUT, LEN, alphabet);});
+			CS(map, {	MAP = 1; show_map(alphabet);});
 			CS(hide, {	MAP = 0; hide_map();});
-			CD: 	error_message("invalid command");
+			CD: 	error_message("invalid command", 0, "");
 		}
 	}
 
-	clear_user_input();
+	// clear_user_input();
 }
+
+
 
 
 I main()
 {
+	I i;
 	clrscr();
-	make_map(LINE, alphabet);				//< create map 
-	mod_line("vv");			//< show line without any modify 
+	mod_line(LINE, "vv", LEN, alphabet);
+	make_map(LINE, alphabet);
+	show_help();
 	process();
+
 	clrscr();
-	R 0;
+
+
+	return 0;
 }
-
-
 
 
 

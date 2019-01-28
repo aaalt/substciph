@@ -1,4 +1,4 @@
-V error_message(S str);
+V error_message(S str_1, C str_2, S str_3);
 
 C in_alphabet(C c);
 
