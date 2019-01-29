@@ -157,11 +157,17 @@ V show_importants(S* ptr, S alph)
 }
 
 
-V highlight(S str, I y, I x)
+V highlight(S str, I len, I adr, I y, I x)
 {
 	I i;
-	gotoxy(y, x);
-	O("%s%s%s", "\e[4m", str, "\e[24m");
+	gotoxy(y, x + adr);
+	O("\e[4m");
+	for (i = 0; i < len; i++)
+		O("%c", str[adr + i]);
+	O("\e[24m");
+
+
+	// O("%s%s%s", "\e[4m", str, "\e[24m");
 	fflush(stdout);
 }
 
@@ -171,12 +177,12 @@ V highlighted_line(S line, S str)
 	I adrs;
 	j = 0;
 	for (i = 0; i < l_len; i++) {
-		if (line[i] == str[j]) {
+		if (tolower(line[i]) == tolower(str[j])) {
 			if (!j)
 				adrs = i;
 			j++;
 			if (j == s_len) {
-				highlight(str, crd->line_y, crd->line_x + adrs);
+				highlight(line, s_len, adrs, crd->line_y, crd->line_x);
 				j = 0;
 			}
 		}
