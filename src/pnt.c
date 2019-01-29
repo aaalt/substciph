@@ -133,6 +133,40 @@ V show_map(S alph)					//<	five lines at y == map_y; x == map_x
 	MAP = 1;
 }
 
+V result(S alph)
+{
+	C c, k;
+	I i, j;
+
+	O("\n\tRESULTS:\n\n");
+
+	for (i = 0; i < 13; i++) {
+		k = 0;
+		O("\t%c  -->  ", 'a' + i);
+		for (j = 0; j < 26; j++) {
+			if ('a' + i == alph[j]) {
+				k = 1;
+				O("%c\t", j + 'a');
+			}
+		}
+		if (!k)
+			O("*\t");
+
+		k = 0;
+		O("\t%c  -->  ", 'a' + i + 13);
+		for (j = 0; j < 26; j++) {
+			if ('a' + i + 13 == alph[j]) {
+				k = 1;
+				O("%c\t", j + 'a');
+			}
+		}
+		if (!k)
+			O("*\t");
+		O("\n");
+	}
+
+	O("\n\n");
+}
 
 
 V show_importants(S* ptr, S alph)
@@ -166,8 +200,6 @@ V highlight(S str, I len, I adr, I y, I x)
 		O("%c", str[adr + i]);
 	O("\e[24m");
 
-
-	// O("%s%s%s", "\e[4m", str, "\e[24m");
 	fflush(stdout);
 }
 

@@ -16,14 +16,17 @@ extern coor crd;
 
 C LINE[] = "Vs lbh nfxrq Oehpr Fpuarvre gb qrpelcg guvf, ur'q pehfu lbhe fxhyy jvgu uvf ynhtu.";
 
+
 C MAP = 0;
-C USER_INPUT[US_IN_LEN];
+
 I ST = 2;
 I IM;
 C IM_S = 0;
 I H_ = 0;
-C alphabet[26];			
-S importants[15];
+
+C USER_INPUT[US_IN_LEN];
+C alphabet[LETTERS];			
+S importants[100];
 
 pCoors coors = {4, 3, 7, 6, 0, 17, 0, 18};
 coor crd = &coors;
@@ -96,10 +99,11 @@ V process()
 		SW(ST) { 
 			CS(help,{	MAP = 0; show_help();});	
 			CS(cc, 	{	upd_cph(LINE, USER_INPUT, LEN, alphabet);});
+			CS(lght,{	highlighted_line(LINE, USER_INPUT + 1);});
 			CS(map, {	MAP = 1; IM_S = 0; show_map(alphabet);});
 			CS(hide,{	IM_S = 0; MAP = 0; hide_map();});
 			CS(imp,	{	IM_S = 1; MAP = 0; show_importants(importants, alphabet);});
-			CS(lght,{	highlighted_line(LINE, USER_INPUT + 1);});
+			
 			CS(quit,{	break;});
 			CD: 		error_message("invalid command", 0, "");
 		}
@@ -112,13 +116,15 @@ I main()
 {
 	I i;
 	clrscr();
+	
 	mod_line(LINE, "vv", LEN, alphabet);
 	make_map(LINE, alphabet);
 	count_importants(LINE, LEN, importants);
 	show_help();
 
 	process();
-	
+	result(alphabet);
+	getchar();
 	clrscr();
 	return 0;
 }

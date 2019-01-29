@@ -31,8 +31,9 @@ typedef enum STATE {quit, help, cc, map, hide, imp, lght} STATE;
 
 ///////////////////////////////////////////////////
 // S LINE = "Vs lbh nfxrq Oehpr Fpuarvre gb qrpelcg guvf, ur'q pehfu lbhe fxhyy jvgu uvf ynhtu."
-#define US_IN_LEN 10
+#define US_IN_LEN 600
 
+#define LETTERS 26
 
 
 #define LEN scnt(LINE)

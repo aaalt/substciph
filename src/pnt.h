@@ -8,4 +8,8 @@ V count_importants(S line, I len, S* ptr_s);
 
 V show_importants(S* ptr, S alph);
 
+V highlighted_line(S line, S str);
+
+V result(S alph);
+
 
