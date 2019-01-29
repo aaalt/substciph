@@ -9,3 +9,5 @@ C case_c(C c) ;			//< 1 -- upper; 0 -- lower
 C nocase_cmp(C a, C b);
 
 V clear_error();
+
+V print_line(S str);

@@ -21,11 +21,11 @@ C USER_INPUT[US_IN_LEN];
 I ST = 2;
 I IM;
 C IM_S = 0;
-
+I H_ = 0;
 C alphabet[26];			
 S importants[15];
 
-pCoors coors = {4, 3, 7, 6, 0, 16, 0, 17};
+pCoors coors = {4, 3, 7, 6, 0, 17, 0, 18};
 coor crd = &coors;
 
 
@@ -99,8 +99,9 @@ V process()
 			CS(map, {	MAP = 1; IM_S = 0; show_map(alphabet);});
 			CS(hide,{	IM_S = 0; MAP = 0; hide_map();});
 			CS(imp,	{	IM_S = 1; MAP = 0; show_importants(importants, alphabet);});
-
-			CD: 	error_message("invalid command", 0, "");
+			CS(lght,{	highlighted_line(LINE, USER_INPUT + 1);});
+			CS(quit,{	break;});
+			CD: 		error_message("invalid command", 0, "");
 		}
 	}
 
@@ -115,7 +116,9 @@ I main()
 	make_map(LINE, alphabet);
 	count_importants(LINE, LEN, importants);
 	show_help();
+
 	process();
+	
 	clrscr();
 	return 0;
 }

@@ -21,7 +21,7 @@ typedef pCoors* coor;
 
 ///////////////////////////////////////////////////
 
-typedef enum STATE {quit, help, cc, map, hide, imp} STATE;
+typedef enum STATE {quit, help, cc, map, hide, imp, lght} STATE;
 
 
 

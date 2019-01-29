@@ -34,3 +34,11 @@ V clear_error()
 {
 	clear_line(crd->err_y);
 }
+
+V print_line(S str)
+{
+	gotoxy(crd->line_y , crd->line_x);
+	O("%s", str);
+	fflush(stdout);
+}
+

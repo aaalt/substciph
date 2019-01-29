@@ -11,6 +11,7 @@
 
 ext coor crd;
 ext I IM;
+
 V clear_user_input()				//< clear line with y == usr_y
 {
 	// O("clear_user_input [usr.c]\n");
@@ -42,9 +43,12 @@ V show_help()						//< five lines at y == map_y; x == map_x
 	O("\t'h'    --->  hide map");
 	gotoxy(crd->map_y + 5, crd->map_x);
 	O("\t'i'    --->  show importants");
-	gotoxy(crd->map_y + 7, crd->map_x);
-	O("\t* if you want to replace for ex. 'a' with");
+	gotoxy(crd->map_y + 6, crd->map_x);
+	O("\t'*str' --->  highlight str");
+
 	gotoxy(crd->map_y + 8, crd->map_x);
+	O("\t* if you want to replace for ex. 'a' with");
+	gotoxy(crd->map_y + 9, crd->map_x);
 	O("\t  used 'b', just do ::_ bx than ::_ ba");
 	fflush(stdout);
 }
@@ -129,36 +133,7 @@ V show_map(S alph)					//<	five lines at y == map_y; x == map_x
 	MAP = 1;
 }
 
-//< keep all substrings len <= 4 in S* ptr
-V count_importants(S line, I len, S* ptr_s)
-{
-	I i, j = 0, k = 0, count = 0;
-	C c;
 
-	//< calculate all smalls 
-	for (i = 0; i < len; ) {
-		count = 0;
-		j = i;
-		while (line[i] != ' ' && line[i] != ',' && line[i] != '.' && line[i] != 0) {
-			c = line[i+1];
-			if (c != ' ' && c != ',' && c != '.' && c == line[i]) {
-				ptr_s[k++] = &line[j];
-				for (; line[i] != ' ' && line[i] != ',' && line[i] !='.'; i++);
-					count += 4;
-			}
-			else {
-				i++;
-				count++;
-			}
-		}
-		while (line[i] == ' ' || line[i] == ',' || line[i] == '.')
-			i++;
-		if (count <= 4)
-			ptr_s[k++] = &line[j];
-	}
-
-	IM = k;
-}
 
 V show_importants(S* ptr, S alph)
 {
@@ -180,6 +155,38 @@ V show_importants(S* ptr, S alph)
 
 	print_valids(alph);
 }
+
+
+V highlight(S str, I y, I x)
+{
+	I i;
+	gotoxy(y, x);
+	O("%s%s%s", "\e[4m", str, "\e[24m");
+	fflush(stdout);
+}
+
+V highlighted_line(S line, S str)
+{
+	I i, j, l_len = scnt(line), s_len = scnt(str), stat = 0;
+	I adrs;
+	j = 0;
+	for (i = 0; i < l_len; i++) {
+		if (line[i] == str[j]) {
+			if (!j)
+				adrs = i;
+			j++;
+			if (j == s_len) {
+				highlight(str, crd->line_y, crd->line_x + adrs);
+				j = 0;
+			}
+		}
+		else 
+			j = 0;
+	}
+}
+
+
+
 
 
 
