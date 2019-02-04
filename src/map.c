@@ -16,71 +16,7 @@ extern C MAP;
 	
 V hide_map();						//< clear five lines at y == map_y; x == map_x
 V print_valids(S alph);
-/*
-V show_map(S alph)					//<	five lines at y == map_y; x == map_x
-{
-	I i;
 
-	hide_map();
-
-	gotoxy(crd->map_y, crd->map_x);
-	O("cipher|    ");
-	for (i = 0; i < 6; i++)
-		O("%c  ", 'a' + i);
-	O("    ");
-	for (i = 0; i < 7; i++)
-		O("%c  ", 'a' + i + 6);
-	O("    |cipher");
-
-
-	gotoxy(crd->map_y + 1, crd->map_x);
-	O("origin|    ");
-	for (i = 0; i < 6; i++) {
-		if (alph[i])
-			O("%c  ", alph[i]);
-		else 
-			O("*  ");
-	}
-	O("    ");
-	for (i = 0; i < 7; i++) {
-		if (alph[i + 6])
-			O("%c  ", alph[i + 6]);
-		else 
-			O("*  ");
-	}
-	O("    |origin");
-
-	gotoxy(crd->map_y + 3, crd->map_x);
-	O("cipher|    ");
-	for (i = 0; i < 6; i++)
-		O("%c  ", 'n' + i);
-	O("    ");
-	for (i = 0; i < 7; i++)
-		O("%c  ", 'n' + i + 6);
-	O("    |cipher");
-
-	gotoxy(crd->map_y + 4, crd->map_x);
-	O("origin|    ");
-	for (i = 0; i < 6; i++) {
-		if (alph[i + 13])
-			O("%c  ", alph[i + 13]);
-		else 
-			O("*  ");
-	}
-	O("    ");
-	for (i = 0; i < 7; i++) {
-		if (alph[i + 19])
-			O("%c  ", alph[i + 19]);
-		else 
-			O("*  ");
-	}
-	O("    |origin");
-
-	print_valids(alph);
-
-	MAP = 1;
-}
-*/
 I letter_num(C c)
 {
 	R (c >= 'A' && c <= 'Z') ? (c - 'A') : (c - 'a');
@@ -140,32 +76,5 @@ C mod_map(S str, S alph)			//< modify map; for ex. str == "ab"; all a's to b
 
 	R1;
 }
-/*
-V hide_map()						//< clear five lines at y == map_y; x == map_x
-{
-	for (I i = 0; i < crd->usr_y - crd->map_y; i++) 
-		clear_line(crd->map_y + i);
-}
-
-V print_valids(S alph)
-{
-	I j;
-	C i, c = 0;
-	gotoxy(crd->map_y + 6, crd->map_x);
-	O("valids:    ");
-	for (i = 0; i < 26; i++) {
-		c = 0;
-		for (j = 0; j < 26; j++) {
-			if (alph[j] == (i + 'a')) {
-				c = 1;
-				j = 26;
-			}
-		}
-		if (!c)
-			O("%c   ", (i + 'a'));
-	}
-}
-*/
-
 
 

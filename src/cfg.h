@@ -38,7 +38,6 @@ typedef enum STATE {quit, help, cc, map, hide, imp, lght} STATE;
 
 #define LEN scnt(LINE)
 
-// enum ATOZ {A_, B_, C_, D_, E_, F_, G_, H_, I_, J_, K_, L_, M_, N_, O_, P_, Q_, R_, S_, T_, U_, V_, W_, X_, Y_, Z_};
 /*C alphabet[26];			
 
 //< alphabet[num] -- key for num letetr 

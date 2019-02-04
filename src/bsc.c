@@ -36,7 +36,6 @@ coor crd = &coors;
 
 // enum STATES {quit, help, cc, map, hide};
 
-
 /****************************************
  *	texttexttexttexttexttext			*
  *										*
@@ -64,17 +63,10 @@ coor crd = &coors;
 	pCoors coor = {4, 0, 6, 3, 4, 12};
 	coors crd = &coor;
 ///////////////////////////////////////////////////
-
-	#define gotoxy(x,y) printf("\033[%d;%dH",(x),(y))
-	#define clrscr() printf("\e[1;1H\e[2J");
-
-	#define US_IN_LEN 10
-///////////////////////////////////////////////////
 	S LINE = "Vs lbh nfxrq Oehpr Fpuarvre gb qrpelcg guvf, ur'q pehfu lbhe fxhyy jvgu uvf ynhtu."
 	C USER_INPUT[US_IN_LEN];
 	I ST = 0;
 
-	enum ATOZ {A_, B_, C_, D_, E_, F_, G_, H_, I_, J_, K_, L_, M_, N_, O_, P_, Q_, R_, S_, T_, U_, V_, W_, X_, Y_, Z_};
 	C alphabet[26];			
 
 	//< alphabet[num] -- key for num letetr 
@@ -88,6 +80,8 @@ coor crd = &coors;
 //<	2: 	cc		decrypt
 //<	3:	m 		map
 //<	4:	h 		hide map
+//<	5:	i 		show importants
+//<	6:	*str 	highlight substrings str
 
 V process()
 {
