@@ -1,8 +1,8 @@
 all: 
-	gcc -g -o tool src/bsc.c src/pnt.c src/map.c src/usr.c src/min.c && ./tool
+	gcc -g -o tool src/lgc/bsc.c src/lgc/set.c src/min/min.c src/min/pnt.c src/lgc/map.c src/lgc/usr.c
 
 clear: 
 	rm tool 
 
 run:
-	./tool
+	gcc -g -o tool src/lgc/bsc.c src/lgc/set.c src/min/min.c src/min/pnt.c src/lgc/map.c src/lgc/usr.c && ./tool
