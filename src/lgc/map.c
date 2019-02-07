@@ -2,10 +2,10 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "___.h"
+#include "../cfg/___.h"
 
 #include "../cfg/cfg.h"
-#include "../cfg/min.h"
+#include "../min/min.h"
 #include "../min/pnt.h"
 
 
