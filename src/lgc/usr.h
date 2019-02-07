@@ -11,4 +11,4 @@ V upd_cph(S str, S key, I len, S alph);
 
 C mod_line(S str, S key, I len, S alph);
 
-V count_importants(S line, I len, S* ptr_s);	//< keep all substrings len <= 4 in S* ptr
+S* count_importants(S line, I len, S* ptr_s);	//< keep all substrings len <= 4 in S* ptr

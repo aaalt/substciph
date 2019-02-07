@@ -4,10 +4,15 @@
 #include <string.h>
 #include <ctype.h>
 
-#include "cfg.h"
+#include <sys/ioctl.h>
+#include <dirent.h>
+
+
+#include "../cfg/cfg.h"
 
 #include "min.h"
-#include "map.h"
+#include "../lgc/map.h"
+
 
 ext coor crd;
 ext I IM;
@@ -32,24 +37,26 @@ V show_help()						//< five lines at y == map_y; x == map_x
 {
 	hide_map();
 	gotoxy(crd->map_y, crd->map_x);
-	O("\t'!'    --->  help");
+	O("'!'    --->  help");
 	gotoxy(crd->map_y + 1, crd->map_x);
-	O("\t'q'    --->  quit");
+	O("'q'    --->  quit");
 	gotoxy(crd->map_y + 2, crd->map_x);
-	O("\t'a''b' --->  swap each 'a' with 'b'");
+	O("'a''b' --->  swap each 'a' with 'b'");
 	gotoxy(crd->map_y + 3, crd->map_x);
-	O("\t'm'    --->  show map");
+	O("'m'    --->  show map");
 	gotoxy(crd->map_y + 4, crd->map_x);
-	O("\t'h'    --->  hide map");
+	O("'h'    --->  hide map");
 	gotoxy(crd->map_y + 5, crd->map_x);
-	O("\t'i'    --->  show importants");
+	O("'i'    --->  show importants");
 	gotoxy(crd->map_y + 6, crd->map_x);
-	O("\t'*str' --->  highlight str");
+	O("'*str' --->  highlight str");
+	gotoxy(crd->map_y + 7, crd->map_x);
+	O("'a^'   --->  swap each a with ^[|]");
 
-	gotoxy(crd->map_y + 8, crd->map_x);
-	O("\t* if you want to replace for ex. 'a' with");
 	gotoxy(crd->map_y + 9, crd->map_x);
-	O("\t  used 'b', just do ::_ bx than ::_ ba");
+	O("* if you want to replace for ex. 'a' with");
+	gotoxy(crd->map_y + 10, crd->map_x);
+	O("  used 'b', just do ::_ bx than ::_ ab");
 	fflush(stdout);
 }
 
@@ -57,7 +64,7 @@ V print_valids(S alph)
 {
 	I j;
 	C i, c = 0;
-	gotoxy(crd->map_y + 6, crd->map_x);
+	gotoxy(crd->usr_y -2, crd->map_x);
 	O("valids:    ");
 	for (i = 0; i < 26; i++) {
 		c = 0;
@@ -68,7 +75,7 @@ V print_valids(S alph)
 			}
 		}
 		if (!c)
-			O("%c   ", (i + 'a'));
+			O("%c ", (i + 'a'));
 	}
 }
 
@@ -77,16 +84,16 @@ V show_map(S alph)					//<	five lines at y == map_y; x == map_x
 	I i;
 	hide_map();
 	gotoxy(crd->map_y, crd->map_x);
-	O("cipher|    ");
+	O("c|    ");
 	for (i = 0; i < 6; i++)
 		O("%c  ", 'a' + i);
 	O("    ");
 	for (i = 0; i < 7; i++)
 		O("%c  ", 'a' + i + 6);
-	O("    |cipher");
+	O("    |c");
 
 	gotoxy(crd->map_y + 1, crd->map_x);
-	O("origin|    ");
+	O("o|    ");
 	for (i = 0; i < 6; i++) {
 		if (alph[i])
 			O("%c  ", alph[i]);
@@ -100,19 +107,19 @@ V show_map(S alph)					//<	five lines at y == map_y; x == map_x
 		else 
 			O("*  ");
 	}
-	O("    |origin");
+	O("    |o");
 
 	gotoxy(crd->map_y + 3, crd->map_x);
-	O("cipher|    ");
+	O("c|    ");
 	for (i = 0; i < 6; i++)
 		O("%c  ", 'n' + i);
 	O("    ");
 	for (i = 0; i < 7; i++)
 		O("%c  ", 'n' + i + 6);
-	O("    |cipher");
+	O("    |c");
 
 	gotoxy(crd->map_y + 4, crd->map_x);
-	O("origin|    ");
+	O("o|    ");
 	for (i = 0; i < 6; i++) {
 		if (alph[i + 13])
 			O("%c  ", alph[i + 13]);
@@ -126,7 +133,7 @@ V show_map(S alph)					//<	five lines at y == map_y; x == map_x
 		else 
 			O("*  ");
 	}
-	O("    |origin");
+	O("    |o");
 
 	print_valids(alph);
 
@@ -168,38 +175,48 @@ V result(S alph)
 	O("\n\n");
 }
 
-
 V show_importants(S* ptr, S alph)
 {
-	I i, j, k = 0;
+	I i, j, k = 0, d = 0, len = 0, wh = 0;
 
 	hide_map();
-	gotoxy(crd->map_y, crd->map_x);
-	for (i = 0; i < IM; i++) {
 
-		for (j = 0; ptr[i][j] != ' ' && ptr[i][j] != ',' && ptr[i][j] != '.'; j++)
-			O("%c", ptr[i][j]);
-		O("\t");
-		fflush(stdout);
-		if (!((i + 1)%3)) {
+	gotoxy(crd->map_y, crd->map_x);
+
+	for (i = 0; i < IM; i++) {
+		len = 0;
+		for (j = 0; ptr[i][j] && !is_delim(ptr[i][j]); j++)
+			;
+		len = j;
+
+		if (wh + len <= terminal->ws_col - crd->map_x*2) {
+			for (j = 0; ptr[i][j] && !is_delim(ptr[i][j]); j++, wh++) 
+				O("%c", ptr[i][j]);
+			fflush(stdout);
+			for (j = 0; j < 8 - (len%8) + (len/8)*8 && wh < terminal->ws_col - crd->map_x*2; j++, wh++)
+				O(" ");
+		}
+		else {
 			k++;
 			gotoxy(crd->map_y + k, crd->map_x);
+			wh = 0;
+			i--;
 		}
-	}
 
+	}
 	print_valids(alph);
 }
 
-
 V highlight(S str, I len, I adr, I y, I x)
 {
-	I i;
-	gotoxy(y, x + adr);
-	O("\e[4m");
-	for (i = 0; i < len; i++)
-		O("%c", str[adr + i]);
-	O("\e[24m");
+	I i, j;
 
+	for (i = 0; i < len; i++) {
+		gotoxy(y_of_i(str, adr+i, terminal->ws_col - (crd->line_x*2), crd->line_y), x_of_i(str, adr+i, terminal->ws_col - (crd->line_x*2), crd->line_x));
+		O("\e[4m");
+		O("%c", str[adr + i]);
+		O("\e[24m");
+	}
 	fflush(stdout);
 }
 
@@ -209,11 +226,14 @@ V highlighted_line(S line, S str)
 	I adrs;
 	j = 0;
 	for (i = 0; i < l_len; i++) {
-		if (tolower(line[i]) == tolower(str[j])) {
+		if (tolower_(line[i]) == tolower_(str[j])) {
 			if (!j)
 				adrs = i;
 			j++;
 			if (j == s_len) {
+				//< line - source; s_len - amount of highlighting
+				//<	adrs - first highlighting letter
+				//< y, x start of text
 				highlight(line, s_len, adrs, crd->line_y, crd->line_x);
 				j = 0;
 			}

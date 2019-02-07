@@ -3,19 +3,23 @@
 #include <string.h>
 #include <unistd.h>
 #include <ctype.h>
+#include <sys/ioctl.h>
+#include <dirent.h>
 
-#include "___.h"
-#include "cfg.h"
+#include "../cfg/___.h"
+#include "../cfg/cfg.h"
 
-#include "min.h"
+#include "set.h"
+#include "../min/min.h"
 #include "map.h"
 #include "usr.h"
-#include "pnt.h"
+#include "../min/pnt.h"
 
 extern coor crd;
 
-C LINE[] = "Vs lbh nfxrq Oehpr Fpuarvre gb qrpelcg guvf, ur'q pehfu lbhe fxhyy jvgu uvf ynhtu.";
+C LINE_[] = "Vs lbh nfxrq Oehpr Fpuarvre gb qrpelcg guvf, ur'q pehfu lbhe fxhyy jvgu uvf ynhtu.";
 
+S LINE;
 
 C MAP = 0;
 
@@ -24,12 +28,20 @@ I IM;
 C IM_S = 0;
 I H_ = 0;
 
+I LEN;
+
 C USER_INPUT[US_IN_LEN];
 C alphabet[LETTERS];			
-S importants[100];
+S* importants;
+I IM_AM;
 
-pCoors coors = {4, 3, 7, 6, 0, 17, 0, 18};
+// pCoors coors = {4, 3, 7, 6, 0, 17, 0, 18};
+pCoors coors;
 coor crd = &coors;
+
+
+pTerminal_conf win_size;
+ter_conf terminal = &win_size;
 
 
 //< alphabet[num] -- key for num letetr 
@@ -82,6 +94,7 @@ coor crd = &coors;
 //<	4:	h 		hide map
 //<	5:	i 		show importants
 //<	6:	*str 	highlight substrings str
+//<	7:	a^		swap a with ^
 
 V process()
 {
@@ -97,7 +110,7 @@ V process()
 			CS(map, {	MAP = 1; IM_S = 0; show_map(alphabet);});
 			CS(hide,{	IM_S = 0; MAP = 0; hide_map();});
 			CS(imp,	{	IM_S = 1; MAP = 0; show_importants(importants, alphabet);});
-			
+			// CS(swap,{	upd_cph(LINE, USER_INPUT, LEN, alphabet);});
 			CS(quit,{	break;});
 			CD: 		error_message("invalid command", 0, "");
 		}
@@ -105,21 +118,41 @@ V process()
 
 }
 
+//< place of letter --> place(line[i]) == y: i / height x: i % width 
 
-I main()
+I main(I argc, S* argv)
 {
-	I i;
+	I i, size;
+	FILE* ptr;
+
+	LEN = scnt(LINE_);
+	// LEN = scnt(LINE_);
+	// kbinit();
+
 	clrscr();
+	if (!set_start(argc, argv, terminal))
+		R0;
+
+
+	// clrscr();
 	
-	mod_line(LINE, "vv", LEN, alphabet);
+	print_line(LINE);
 	make_map(LINE, alphabet);
-	count_importants(LINE, LEN, importants);
+	// O("COUNT importants\n");
+	importants = count_importants(LINE, LEN, importants);
 	show_help();
 
 	process();
 	result(alphabet);
+	O("\n");
+	// free(LINE);
+	// free(importants);
 	getchar();
 	clrscr();
+	O("\n");
+
+
+	// kbfini();
 	return 0;
 }
 

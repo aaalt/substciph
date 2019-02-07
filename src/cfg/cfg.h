@@ -19,9 +19,13 @@ typedef struct Coors {
 typedef pCoors* coor;
 
 
+typedef struct winsize pTerminal_conf;
+typedef pTerminal_conf* ter_conf;
+
+
 ///////////////////////////////////////////////////
 
-typedef enum STATE {quit, help, cc, map, hide, imp, lght} STATE;
+typedef enum STATE {quit, help, cc, map, hide, imp, lght, swap} STATE;
 
 
 
@@ -35,9 +39,11 @@ typedef enum STATE {quit, help, cc, map, hide, imp, lght} STATE;
 
 #define LETTERS 26
 
+#define MENU_WIDTH 58
+#define MENU_HIGHT 10
 
-#define LEN scnt(LINE)
 
+ext I LEN;
 /*C alphabet[26];			
 
 //< alphabet[num] -- key for num letetr 
@@ -48,7 +54,7 @@ enum STATES {quit, help, cc, map, hide};*/
 
 // extern C LINE[];
 
-ext C LINE[];
+ext S LINE;
 ext C MAP;
 ext C USER_INPUT[];
 ext I ST;
@@ -59,7 +65,16 @@ ext I IM;
 ext C IM_S;
 
 ext C alphabet[];			
-ext S importants[];
+ext S* importants;
+
+ext pTerminal_conf win_size;
+ext ter_conf terminal;
+
+ext C LINE_[];
+ext I IM_AM;
+
+
+
 
 
 

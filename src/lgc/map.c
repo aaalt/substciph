@@ -4,9 +4,9 @@
 
 #include "___.h"
 
-#include "cfg.h"
-#include "min.h"
-#include "pnt.h"
+#include "../cfg/cfg.h"
+#include "../cfg/min.h"
+#include "../min/pnt.h"
 
 
 extern coor crd;
@@ -33,7 +33,7 @@ V make_map(S line, S alph)			//< scan LINE and compute result into alphabet
 	for (i = 0; i < len; i++) {
 		if (in_alphabet(line[i])) {
 			num = letter_num(line[i]);
-			alph[num] = (C)tolower(line[i]);
+			alph[num] = (C)tolower_(line[i]);
 		}
 	}
 }
@@ -43,19 +43,19 @@ C mod_map(S str, S alph)			//< modify map; for ex. str == "ab"; all a's to b
 	I i, j;
 	C c = '1', par = 0;
 
-	for (i = 0; i < 26 && c != tolower(str[1]); i++)
+	for (i = 0; i < 26 && c != tolower_(str[1]); i++)
 		c = alph[i];
 
-	if (c == tolower(str[1])) {
-		error_message("key '", (C)tolower(str[1]), "' already exists");
+	if (c == tolower_(str[1])) {
+		error_message("key '", (C)tolower_(str[1]), "' already exists");
 		R0;
 	}
 
-	for (i = 0; i < 26 && c != tolower(str[0]); i++)		//< i - 1
+	for (i = 0; i < 26 && c != tolower_(str[0]); i++)		//< i - 1
 		c = alph[i];
 
-	if (i == 26 && c != tolower(str[0])) {		//< no such letter for swap
-		error_message("there is no '", (C)tolower(str[0]), "' in the text");
+	if (i == 26 && c != tolower_(str[0])) {		//< no such letter for swap
+		error_message("there is no '", (C)tolower_(str[0]), "' in the text");
 		R0;
 	}
 
@@ -63,13 +63,13 @@ C mod_map(S str, S alph)			//< modify map; for ex. str == "ab"; all a's to b
 	for (c = alph[i]; i < 26 && c != str[0]; i++)
 		c = alph[i];
 
-	if (c == tolower(str[0])) {
-		error_message("there are more than one '", (C)tolower(str[0]), "'");
-		// error_message("there are more than one '%c'", tolower(str[0]));
+	if (c == tolower_(str[0])) {
+		error_message("there are more than one '", (C)tolower_(str[0]), "'");
+		// error_message("there are more than one '%c'", tolower_(str[0]));
 		R0;
 	}
 
-	alph[j] = tolower(str[1]);
+	alph[j] = tolower_(str[1]);
 
 	if (MAP)
 		show_map(alph);
