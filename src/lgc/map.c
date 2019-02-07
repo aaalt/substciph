@@ -40,7 +40,7 @@ V make_map(S line, S alph)			//< scan LINE and compute result into alphabet
 
 C mod_map(S str, S alph)			//< modify map; for ex. str == "ab"; all a's to b
 {
-	I i, j;
+	I i, j, k;
 	C c = '1', par = 0;
 
 	for (i = 0; i < 26 && c != tolower_(str[1]); i++)
@@ -51,6 +51,8 @@ C mod_map(S str, S alph)			//< modify map; for ex. str == "ab"; all a's to b
 		R0;
 	}
 
+	c = '1';
+
 	for (i = 0; i < 26 && c != tolower_(str[0]); i++)		//< i - 1
 		c = alph[i];
 
@@ -59,15 +61,17 @@ C mod_map(S str, S alph)			//< modify map; for ex. str == "ab"; all a's to b
 		R0;
 	}
 
+	//< j is a number of letter in array to swap
 	j = i - 1;
+
 	for (c = alph[i]; i < 26 && c != str[0]; i++)
 		c = alph[i];
 
 	if (c == tolower_(str[0])) {
 		error_message("there are more than one '", (C)tolower_(str[0]), "'");
-		// error_message("there are more than one '%c'", tolower_(str[0]));
 		R0;
 	}
+	
 
 	alph[j] = tolower_(str[1]);
 
